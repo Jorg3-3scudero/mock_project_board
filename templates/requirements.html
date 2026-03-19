@@ -1,0 +1,165 @@
+{% extends "base.html" %}
+{% block title %}Requisitos{% endblock %}
+
+{% block content %}
+
+<!-- ── Page header ───────────────────────────────────────────────────────── -->
+<div class="mb-8">
+  <div class="flex items-center gap-3 mb-3">
+    <span class="tool-badge badge-role-owner text-sm px-3 py-1">📋 Product Owner</span>
+  </div>
+  <h1 class="text-3xl font-bold text-white mb-2">Requisitos del Sistema</h1>
+  <p class="text-[#8888aa]">
+    Especificaciones funcionales y no funcionales definidas con el cliente y validadas
+    con los stakeholders. Base contractual del alcance del producto.
+  </p>
+</div>
+
+<!-- ── Functional requirements ───────────────────────────────────────────── -->
+<div class="card mb-6">
+  <div class="flex items-center gap-3 mb-5">
+    <h2 class="text-lg font-bold text-white">Requisitos Funcionales</h2>
+    <span class="px-2 py-0.5 rounded-full text-xs font-semibold bg-blue-500/20 text-blue-400 border border-blue-500/30">
+      {{ functional | length }} requisitos
+    </span>
+  </div>
+  <div class="overflow-x-auto" id="req-functional-container">
+    <table class="data-table">
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Descripción</th>
+          <th>Prioridad</th>
+          <th>Validado</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for r in functional %}
+        <tr>
+          <td><span class="font-mono text-xs text-[#8888aa]">RF-{{ '%02d' % r.id }}</span></td>
+          <td class="text-sm">{{ r.description }}</td>
+          <td>
+            {% if r.priority == 'alta' %}
+              <span class="px-2 py-0.5 rounded-full text-xs font-semibold bg-red-500/20 text-red-400 border border-red-500/30">alta</span>
+            {% elif r.priority == 'media' %}
+              <span class="px-2 py-0.5 rounded-full text-xs font-semibold bg-yellow-500/20 text-yellow-400 border border-yellow-500/30">media</span>
+            {% else %}
+              <span class="px-2 py-0.5 rounded-full text-xs font-semibold bg-green-500/20 text-green-400 border border-green-500/30">baja</span>
+            {% endif %}
+          </td>
+          <td>
+            {% if r.validated %}<span class="text-green-400 font-bold text-lg">✓</span>
+            {% else %}<span class="text-red-400 font-bold text-lg">✗</span>{% endif %}
+          </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<!-- ── Non-functional requirements ───────────────────────────────────────── -->
+<div class="card mb-6">
+  <div class="flex items-center gap-3 mb-5">
+    <h2 class="text-lg font-bold text-white">Requisitos No Funcionales</h2>
+    <span class="px-2 py-0.5 rounded-full text-xs font-semibold bg-purple-500/20 text-purple-400 border border-purple-500/30">
+      {{ non_functional | length }} requisitos
+    </span>
+  </div>
+  <div class="overflow-x-auto" id="req-nonfunctional-container">
+    <table class="data-table">
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Descripción</th>
+          <th>Prioridad</th>
+          <th>Validado</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for r in non_functional %}
+        <tr>
+          <td><span class="font-mono text-xs text-[#8888aa]">RNF-{{ '%02d' % loop.index }}</span></td>
+          <td class="text-sm">{{ r.description }}</td>
+          <td>
+            {% if r.priority == 'alta' %}
+              <span class="px-2 py-0.5 rounded-full text-xs font-semibold bg-red-500/20 text-red-400 border border-red-500/30">alta</span>
+            {% elif r.priority == 'media' %}
+              <span class="px-2 py-0.5 rounded-full text-xs font-semibold bg-yellow-500/20 text-yellow-400 border border-yellow-500/30">media</span>
+            {% else %}
+              <span class="px-2 py-0.5 rounded-full text-xs font-semibold bg-green-500/20 text-green-400 border border-green-500/30">baja</span>
+            {% endif %}
+          </td>
+          <td>
+            {% if r.validated %}<span class="text-green-400 font-bold text-lg">✓</span>
+            {% else %}<span class="text-red-400 font-bold text-lg">✗</span>{% endif %}
+          </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<!-- ── Validation checklist ───────────────────────────────────────────────── -->
+<div class="card mb-6">
+  <h2 class="text-lg font-bold text-white mb-5">Validación del Cliente</h2>
+  <div class="space-y-3">
+    {% set checklist = [
+      'Reunión inicial con stakeholders realizada',
+      'Requisitos revisados y aprobados por el cliente',
+      'Casos de uso validados con usuario final',
+      'Prioridades acordadas con Product Owner',
+      'Documento de requisitos firmado',
+    ] %}
+    {% for item in checklist %}
+    <div class="flex items-center gap-3 p-3 rounded-lg" style="background:rgba(34,197,94,0.05);border:1px solid rgba(34,197,94,0.15);">
+      <div class="w-6 h-6 rounded-full flex items-center justify-center flex-shrink-0"
+           style="background:rgba(34,197,94,0.2);border:1px solid rgba(34,197,94,0.4);">
+        <span class="text-green-400 text-xs font-bold">✓</span>
+      </div>
+      <span class="text-sm text-[#e8e8f0]">{{ item }}</span>
+    </div>
+    {% endfor %}
+  </div>
+</div>
+
+<!-- ── Resources ─────────────────────────────────────────────────────────── -->
+<div class="card">
+  <h2 class="text-lg font-bold text-white mb-5">Recursos del Proyecto</h2>
+  <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+
+    <!-- Human resources -->
+    <div>
+      <h3 class="text-sm font-semibold text-[#8888aa] uppercase tracking-wider mb-3">Equipo Humano</h3>
+      <table class="data-table">
+        <thead>
+          <tr><th>Rol</th><th>Nombre</th></tr>
+        </thead>
+        <tbody>
+          {% for m in team %}
+          <tr>
+            <td class="text-sm text-[#8888aa]">{{ m.role }}</td>
+            <td class="text-sm font-medium">{{ m.name }}</td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+
+    <!-- Tech resources -->
+    <div>
+      <h3 class="text-sm font-semibold text-[#8888aa] uppercase tracking-wider mb-3">Recursos Tecnológicos</h3>
+      <ul class="space-y-2">
+        {% for tool in ['VS Code', 'GitHub', 'Figma', 'Notion', 'Python 3.11', 'FastAPI', 'PostgreSQL', 'Railway'] %}
+        <li class="flex items-center gap-2 text-sm">
+          <span class="w-1.5 h-1.5 rounded-full bg-purple-400 flex-shrink-0"></span>
+          <span class="text-[#e8e8f0]">{{ tool }}</span>
+        </li>
+        {% endfor %}
+      </ul>
+    </div>
+  </div>
+</div>
+
+{% endblock %}

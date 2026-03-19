@@ -1,0 +1,162 @@
+{% extends "base.html" %}
+{% block title %}Despliegue{% endblock %}
+
+{% block content %}
+
+<!-- ── Page header ───────────────────────────────────────────────────────── -->
+<div class="flex items-center justify-between mb-6">
+  <div>
+    <h1 class="text-xl font-bold text-white">Despliegue</h1>
+    <p class="text-sm text-[#8888aa] mt-0.5">Estado de producción, builds e historial de releases</p>
+  </div>
+  <div class="flex items-center gap-2">
+    <span class="text-xs text-[#8888aa]">Responsable:</span>
+    <div class="w-6 h-6 rounded-full flex items-center justify-center text-xs font-bold"
+         style="background:#ec489920;border:1.5px solid #ec489960;color:#ec4899;">SC</div>
+    <span class="text-xs text-white font-medium">Sofía Castro</span>
+  </div>
+</div>
+
+<!-- ── Deployment status ──────────────────────────────────────────────────── -->
+<div class="card mb-6">
+  <div class="flex items-center gap-3 mb-6">
+    <h2 class="text-lg font-bold text-white">Estado del Despliegue</h2>
+    <div class="flex items-center gap-2">
+      <span class="status-dot"></span>
+      <span class="text-green-400 font-semibold text-sm">Sistema en línea</span>
+    </div>
+  </div>
+
+  <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+    <table class="data-table">
+      <tbody>
+        {% set deploy_info = [
+          ('Plataforma',    'Railway'),
+          ('URL',           'sistemagestorpro.up.railway.app'),
+          ('Entorno',       'Producción'),
+          ('Última build',  '14 Mar 2025 — 09:42 UTC'),
+          ('Uptime',        '99.97%'),
+          ('Versión',       'v1.0.3'),
+        ] %}
+        {% for label, value in deploy_info %}
+        <tr>
+          <td class="text-sm text-[#8888aa] font-medium">{{ label }}</td>
+          <td class="text-sm font-semibold text-white">
+            {% if label == 'URL' %}
+              <span class="text-blue-400 font-mono text-xs">{{ value }}</span>
+            {% elif label == 'Uptime' %}
+              <span class="text-green-400">{{ value }}</span>
+            {% elif label == 'Versión' %}
+              <span class="px-2 py-0.5 rounded text-xs font-bold"
+                    style="background:rgba(108,99,255,0.2);color:#a78bfa;border:1px solid rgba(108,99,255,0.3);">
+                {{ value }}
+              </span>
+            {% else %}
+              {{ value }}
+            {% endif %}
+          </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+
+    <div class="flex flex-col justify-center items-center gap-4 p-6 rounded-xl"
+         style="background:rgba(34,197,94,0.05);border:1px solid rgba(34,197,94,0.2);">
+      <div class="text-5xl">🟢</div>
+      <div class="text-center">
+        <div class="text-2xl font-bold text-green-400 mb-1">Online</div>
+        <div class="text-sm text-[#8888aa]">Todos los sistemas operativos</div>
+      </div>
+      <div class="grid grid-cols-3 gap-3 w-full">
+        {% for label, val in [('API','✓'),('DB','✓'),('CDN','✓')] %}
+        <div class="text-center p-2 rounded-lg"
+             style="background:rgba(34,197,94,0.1);border:1px solid rgba(34,197,94,0.2);">
+          <div class="text-green-400 font-bold">{{ val }}</div>
+          <div class="text-xs text-[#8888aa]">{{ label }}</div>
+        </div>
+        {% endfor %}
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ── Deployment flow ────────────────────────────────────────────────────── -->
+<div class="card mb-6">
+  <h2 class="text-lg font-bold text-white mb-5">Flujo de Despliegue</h2>
+  <div class="space-y-3">
+    {% set steps = [
+      ('1', 'Developer hace push a la rama main', 'text-purple-400'),
+      ('2', 'GitHub Actions detecta el push y ejecuta el workflow CI/CD', 'text-blue-400'),
+      ('3', 'Pipeline ejecuta pytest — si los tests fallan, se detiene el despliegue', 'text-yellow-400'),
+      ('4', 'Tests aprobados → Railway detecta automáticamente el nuevo commit', 'text-orange-400'),
+      ('5', 'Railway instala dependencias con pip install -r requirements.txt', 'text-cyan-400'),
+      ('6', 'Railway ejecuta uvicorn main:app --host 0.0.0.0 --port $PORT', 'text-green-400'),
+    ] %}
+    {% for num, text, color in steps %}
+    <div class="flex items-start gap-4 p-3 rounded-lg" style="background:rgba(255,255,255,0.02);border:1px solid rgba(42,42,74,0.5);">
+      <div class="w-7 h-7 rounded-full flex items-center justify-center text-xs font-bold flex-shrink-0 mt-0.5"
+           style="background:rgba(108,99,255,0.2);border:1px solid rgba(108,99,255,0.4);color:#a78bfa;">
+        {{ num }}
+      </div>
+      <p class="text-sm text-[#e8e8f0]">{{ text }}</p>
+    </div>
+    {% endfor %}
+
+    <div class="flex items-center gap-3 p-3 rounded-lg"
+         style="background:rgba(34,197,94,0.08);border:1px solid rgba(34,197,94,0.3);">
+      <span class="text-xl">🟢</span>
+      <p class="text-sm text-green-400 font-semibold">
+        Sistema disponible en URL pública — <span class="font-mono font-normal text-xs">sistemagestorpro.up.railway.app</span>
+      </p>
+    </div>
+  </div>
+</div>
+
+<!-- ── Conclusions ────────────────────────────────────────────────────────── -->
+<div class="card mb-6">
+  <h2 class="text-lg font-bold text-white mb-5">Conclusiones del Proyecto</h2>
+  <div class="space-y-4">
+    {% set conclusions = [
+      ('El enfoque sistémico permitió identificar y gestionar dependencias entre componentes de forma efectiva, reduciendo el retrabajo y los conflictos de integración durante el desarrollo.', '🔍', '#6c63ff'),
+      ('La metodología Scrum facilitó la entrega incremental y la incorporación continua de feedback del usuario final, resultando en un producto que supera las expectativas iniciales.', '🔄', '#00d4ff'),
+      ('La separación clara entre frontend y backend mediante una API REST garantiza la escalabilidad y mantenibilidad del sistema, facilitando futuras extensiones sin afectar capas existentes.', '🏗️', '#4ade80'),
+      ('Las pruebas automatizadas con cobertura del 96% redujeron significativamente los errores en producción y aumentaron la confianza del equipo en cada despliegue, habilitando un flujo CI/CD confiable.', '🧪', '#fb923c'),
+    ] %}
+    {% for text, icon, color in conclusions %}
+    <div class="flex gap-4 p-4 rounded-lg" style="background:rgba(255,255,255,0.02);border:1px solid rgba(42,42,74,0.5);">
+      <div class="w-10 h-10 rounded-lg flex items-center justify-center text-xl flex-shrink-0"
+           style="background:rgba(255,255,255,0.05);border:1px solid rgba(42,42,74,0.8);">
+        {{ icon }}
+      </div>
+      <p class="text-sm text-[#e8e8f0] leading-relaxed">{{ text }}</p>
+    </div>
+    {% endfor %}
+  </div>
+</div>
+
+<!-- ── Final tech stack ───────────────────────────────────────────────────── -->
+<div class="card">
+  <h2 class="text-lg font-bold text-white mb-5">Stack Tecnológico Final</h2>
+
+  {% set sections = [
+    ('Backend',      ['Python 3.11','FastAPI','Pydantic','Uvicorn'], 'tool-backend'),
+    ('Frontend',     ['HTML5','CSS3','JavaScript','Tailwind CSS','Jinja2'], 'tool-frontend'),
+    ('DevOps',       ['Git','GitHub','Railway','Pytest','Postman'], 'tool-devops'),
+    ('Metodología',  ['Scrum','Figma','Draw.io','Jira','Notion'], 'tool-method'),
+  ] %}
+
+  <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+    {% for section_name, items, badge_cls in sections %}
+    <div>
+      <h3 class="text-xs font-semibold text-[#8888aa] uppercase tracking-wider mb-3">{{ section_name }}</h3>
+      <div class="flex flex-wrap gap-2">
+        {% for item in items %}
+          <span class="tool-badge {{ badge_cls }}">{{ item }}</span>
+        {% endfor %}
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+</div>
+
+{% endblock %}

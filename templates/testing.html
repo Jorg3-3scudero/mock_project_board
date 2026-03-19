@@ -1,0 +1,147 @@
+{% extends "base.html" %}
+{% block title %}Pruebas{% endblock %}
+
+{% block content %}
+
+<!-- ── Page header ───────────────────────────────────────────────────────── -->
+<div class="flex items-center justify-between mb-6">
+  <div>
+    <h1 class="text-xl font-bold text-white">QA & Pruebas</h1>
+    <p class="text-sm text-[#8888aa] mt-0.5">Cobertura, resultados y registro de incidencias · Sprint 4</p>
+  </div>
+  <div class="flex items-center gap-2">
+    <span class="text-xs text-[#8888aa]">Responsable:</span>
+    <div class="w-6 h-6 rounded-full flex items-center justify-center text-xs font-bold"
+         style="background:#f9731620;border:1.5px solid #f9731660;color:#f97316;">AM</div>
+    <span class="text-xs text-white font-medium">Andrés Mora</span>
+  </div>
+</div>
+
+<!-- ── Test summary cards ─────────────────────────────────────────────────── -->
+<div class="mb-6">
+  <h2 class="text-lg font-bold text-white mb-4">Resumen de Pruebas</h2>
+  <div id="tests-container" class="grid grid-cols-1 md:grid-cols-3 gap-4">
+    {% for _ in range(3) %}
+      <div class="skeleton" style="height:120px;border-radius:0.75rem;"></div>
+    {% endfor %}
+  </div>
+</div>
+
+<!-- ── Code coverage ─────────────────────────────────────────────────────── -->
+<div class="card mb-6">
+  <div class="flex items-center justify-between mb-6">
+    <h2 class="text-lg font-bold text-white">Cobertura de Código</h2>
+    <span class="px-3 py-1 rounded-full text-sm font-bold bg-green-500/20 text-green-400 border border-green-500/30">
+      🧪 96% global
+    </span>
+  </div>
+
+  <!-- Big percentage -->
+  <div class="text-center mb-8">
+    <div class="text-7xl font-extrabold mb-2"
+         style="background:linear-gradient(135deg,#6c63ff,#00d4ff);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;">
+      96%
+    </div>
+    <p class="text-[#8888aa] text-sm">Cobertura total del proyecto</p>
+    <div class="mt-3 mx-auto max-w-xs">
+      <div class="progress-bar-track">
+        <div class="progress-bar" data-progress="96"
+             style="background:linear-gradient(90deg,#6c63ff,#00d4ff);"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Module breakdown -->
+  <div class="space-y-4">
+    {% set modules = [
+      ('Modelos Pydantic',   100, '#22c55e'),
+      ('Endpoints API',       98, '#6c63ff'),
+      ('Lógica de negocio',   94, '#00d4ff'),
+      ('Utilidades',          89, '#fb923c'),
+    ] %}
+    {% for name, pct, color in modules %}
+    <div class="flex items-center gap-4">
+      <span class="text-sm text-[#e8e8f0] w-44 flex-shrink-0">{{ name }}</span>
+      <div class="cov-bar-track flex-1">
+        <div class="cov-bar" data-cov="{{ pct }}" style="background:{{ color }};"></div>
+      </div>
+      <span class="text-sm font-bold w-10 text-right" style="color:{{ color }};">{{ pct }}%</span>
+    </div>
+    {% endfor %}
+  </div>
+</div>
+
+<!-- ── Bug registry ───────────────────────────────────────────────────────── -->
+<div class="card mb-6">
+  <div class="flex items-center justify-between mb-5">
+    <h2 class="text-lg font-bold text-white">Registro de Bugs</h2>
+    <span class="px-3 py-1 rounded-full text-xs font-semibold bg-green-500/20 text-green-400 border border-green-500/30">
+      3/3 resueltos ✓
+    </span>
+  </div>
+  <div class="overflow-x-auto" id="bugs-container">
+    <table class="data-table">
+      <thead>
+        <tr><th>ID</th><th>Descripción</th><th>Severidad</th><th>Estado</th><th>Resuelto por</th></tr>
+      </thead>
+      <tbody>
+        {% for b in bugs %}
+        <tr>
+          <td><span class="font-mono text-xs text-[#8888aa]">#{{ b.id }}</span></td>
+          <td class="text-sm">{{ b.description }}</td>
+          <td>
+            {% if b.severity == 'alta' %}
+              <span class="px-2 py-0.5 rounded-full text-xs font-semibold bg-red-500/20 text-red-400 border border-red-500/30">alta</span>
+            {% elif b.severity == 'media' %}
+              <span class="px-2 py-0.5 rounded-full text-xs font-semibold bg-yellow-500/20 text-yellow-400 border border-yellow-500/30">media</span>
+            {% else %}
+              <span class="px-2 py-0.5 rounded-full text-xs font-semibold bg-green-500/20 text-green-400 border border-green-500/30">baja</span>
+            {% endif %}
+          </td>
+          <td><span class="text-green-400 text-sm font-semibold">Resuelto ✓</span></td>
+          <td class="text-sm text-[#e8e8f0]">{{ b.resolved_by }}</td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<!-- ── Test types explanation ─────────────────────────────────────────────── -->
+<div class="card">
+  <h2 class="text-lg font-bold text-white mb-5">Tipos de Prueba</h2>
+  <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+
+    <div class="p-4 rounded-lg" style="background:rgba(59,130,246,0.05);border:1px solid rgba(59,130,246,0.2);">
+      <div class="text-2xl mb-2">🔬</div>
+      <h3 class="font-bold text-blue-400 mb-2">Pruebas Unitarias</h3>
+      <p class="text-sm text-[#8888aa]">
+        Validan funciones y modelos de forma aislada. Se testean los modelos Pydantic,
+        validaciones de datos y funciones de lógica de negocio sin dependencias externas.
+      </p>
+      <div class="mt-3 text-xs text-blue-400 font-semibold">Herramienta: Pytest</div>
+    </div>
+
+    <div class="p-4 rounded-lg" style="background:rgba(108,99,255,0.05);border:1px solid rgba(108,99,255,0.2);">
+      <div class="text-2xl mb-2">🔗</div>
+      <h3 class="font-bold text-purple-400 mb-2">Pruebas de Integración</h3>
+      <p class="text-sm text-[#8888aa]">
+        Verifican el comportamiento de los endpoints FastAPI de extremo a extremo,
+        incluyendo serialización de respuestas, códigos HTTP y manejo de errores.
+      </p>
+      <div class="mt-3 text-xs text-purple-400 font-semibold">Herramienta: TestClient + Postman</div>
+    </div>
+
+    <div class="p-4 rounded-lg" style="background:rgba(34,197,94,0.05);border:1px solid rgba(34,197,94,0.2);">
+      <div class="text-2xl mb-2">👤</div>
+      <h3 class="font-bold text-green-400 mb-2">Pruebas de Aceptación</h3>
+      <p class="text-sm text-[#8888aa]">
+        Validan flujos completos desde la perspectiva del usuario final: inicio de sesión,
+        matrícula en cursos y generación de reportes de notas.
+      </p>
+      <div class="mt-3 text-xs text-green-400 font-semibold">Responsable: Sofía Castro</div>
+    </div>
+  </div>
+</div>
+
+{% endblock %}

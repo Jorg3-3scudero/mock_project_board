@@ -1,0 +1,205 @@
+{% extends "base.html" %}
+{% block title %}Diseño{% endblock %}
+
+{% block content %}
+
+<!-- ── Page header ───────────────────────────────────────────────────────── -->
+<div class="flex items-center justify-between mb-6">
+  <div>
+    <h1 class="text-xl font-bold text-white">Diseño del Sistema</h1>
+    <p class="text-sm text-[#8888aa] mt-0.5">Arquitectura, modelo de datos y planificación de sprints</p>
+  </div>
+  <div class="flex items-center gap-2">
+    <span class="text-xs text-[#8888aa]">Responsable:</span>
+    <div class="w-6 h-6 rounded-full flex items-center justify-center text-xs font-bold"
+         style="background:#3b82f620;border:1.5px solid #3b82f660;color:#3b82f6;">CH</div>
+    <span class="text-xs text-white font-medium">Carlos Herrera</span>
+  </div>
+</div>
+
+<!-- ── Architecture diagram ──────────────────────────────────────────────── -->
+<div class="card mb-6">
+  <h2 class="text-lg font-bold text-white mb-6">Arquitectura del Sistema</h2>
+
+  <!-- Row 1: Browser → Backend → DB -->
+  <div class="flex items-center justify-center gap-3 flex-wrap mb-6">
+    <div class="arch-box" style="border-color:#60a5fa;color:#60a5fa;">
+      <div class="text-xl mb-1">🌐</div>
+      <div class="font-bold">Navegador</div>
+      <div class="text-xs text-[#8888aa] mt-1">Cliente Web</div>
+    </div>
+
+    <div class="flex flex-col items-center">
+      <span class="arch-arrow">→</span>
+      <span class="text-xs text-[#8888aa] mt-1">HTTP/HTTPS</span>
+    </div>
+
+    <div class="arch-box" style="border-color:#6c63ff;color:#a78bfa;">
+      <div class="text-xl mb-1">⚡</div>
+      <div class="font-bold">FastAPI Backend</div>
+      <div class="text-xs text-[#8888aa] mt-1">Python 3.11</div>
+    </div>
+
+    <div class="flex flex-col items-center">
+      <span class="arch-arrow">→</span>
+      <span class="text-xs text-[#8888aa] mt-1">SQL</span>
+    </div>
+
+    <div class="arch-box" style="border-color:#4ade80;color:#4ade80;">
+      <div class="text-xl mb-1">🗄️</div>
+      <div class="font-bold">PostgreSQL</div>
+      <div class="text-xs text-[#8888aa] mt-1">Base de datos</div>
+    </div>
+  </div>
+
+  <!-- Row 2: Backend → Templates → Static -->
+  <div class="flex items-center justify-center gap-3 flex-wrap">
+    <div class="w-20 text-center text-[#2a2a4a] text-xs hidden sm:block">─────────────────────</div>
+    <div class="flex flex-col items-center gap-3">
+      <div class="flex flex-col items-center">
+        <span class="text-[#8888aa] text-lg">↓</span>
+        <span class="text-xs text-[#8888aa]">Render</span>
+      </div>
+
+      <div class="arch-box" style="border-color:#fb923c;color:#fb923c;">
+        <div class="text-xl mb-1">📄</div>
+        <div class="font-bold">Jinja2 Templates</div>
+        <div class="text-xs text-[#8888aa] mt-1">HTML dinámico</div>
+      </div>
+
+      <div class="flex flex-col items-center">
+        <span class="text-[#8888aa] text-lg">↓</span>
+        <span class="text-xs text-[#8888aa]">Sirve</span>
+      </div>
+
+      <div class="arch-box" style="border-color:#f472b6;color:#f472b6;">
+        <div class="text-xl mb-1">🎨</div>
+        <div class="font-bold">Static Files</div>
+        <div class="text-xs text-[#8888aa] mt-1">CSS / JS</div>
+      </div>
+    </div>
+    <div class="w-20 text-center text-[#2a2a4a] text-xs hidden sm:block">─────────────────────</div>
+  </div>
+</div>
+
+<!-- ── Data model ─────────────────────────────────────────────────────────── -->
+<div class="card mb-6">
+  <h2 class="text-lg font-bold text-white mb-6">Modelo de Datos</h2>
+
+  <div class="flex flex-wrap gap-4 justify-center items-start">
+    {% for entity in entities %}
+    <div class="entity-card" style="{% if loop.index == 2 %}border-color:rgba(108,99,255,0.5);{% endif %}">
+      <div class="entity-header">
+        <span style="color:{% if loop.index==1 %}#60a5fa{% elif loop.index==2 %}#a78bfa{% else %}#4ade80{% endif %}">
+          {{ entity.name }}
+        </span>
+      </div>
+      {% for field in entity.fields %}
+      <div class="entity-field">{{ field }}</div>
+      {% endfor %}
+    </div>
+
+    {% if not loop.last %}
+    <div class="flex flex-col items-center justify-center gap-1 self-center">
+      <div class="text-xs text-[#8888aa]">1</div>
+      <div class="text-[#8888aa] text-lg">→</div>
+      <div class="text-xs text-[#8888aa]">N</div>
+    </div>
+    {% endif %}
+    {% endfor %}
+  </div>
+
+  <div class="mt-4 p-3 rounded-lg text-xs text-[#8888aa]" style="background:rgba(108,99,255,0.05);border:1px solid rgba(108,99,255,0.1);">
+    Un <strong class="text-blue-400">Estudiante</strong> puede tener múltiples
+    <strong class="text-purple-400">Matrículas</strong>, y cada
+    <strong class="text-green-400">Curso</strong> puede tener múltiples matrículas asociadas (relación N:M resuelta con tabla intermedia).
+  </div>
+</div>
+
+<!-- ── Scrum methodology ──────────────────────────────────────────────────── -->
+<div class="card mb-6">
+  <div class="flex items-center justify-between flex-wrap gap-4 mb-5">
+    <h2 class="text-lg font-bold text-white">Metodología Scrum</h2>
+    <span class="px-3 py-1 rounded-full text-xs font-semibold bg-green-500/20 text-green-400 border border-green-500/30">
+      4/4 sprints completados ✓
+    </span>
+  </div>
+
+  <div class="overflow-x-auto" id="sprints-container">
+    <table class="data-table">
+      <thead>
+        <tr><th>Sprint</th><th>Nombre</th><th>Fechas</th><th>Estado</th></tr>
+      </thead>
+      <tbody>
+        {% for s in sprints %}
+        <tr>
+          <td><span class="font-mono font-bold text-purple-400">S{{ s.number }}</span></td>
+          <td class="font-medium">{{ s.name }}</td>
+          <td class="text-xs text-[#8888aa]">{{ s.start_date }} → {{ s.end_date }}</td>
+          <td>
+            <span class="px-2 py-0.5 rounded-full text-xs font-semibold
+              {% if s.status == 'completado' %}bg-green-500/20 text-green-400 border border-green-500/30
+              {% elif s.status == 'en progreso' %}bg-blue-500/20 text-blue-400 border border-blue-500/30
+              {% else %}bg-gray-500/20 text-gray-400 border border-gray-500/30{% endif %}">
+              {% if s.status == 'completado' %}Completado ✓
+              {% elif s.status == 'en progreso' %}En Progreso
+              {% else %}Pendiente{% endif %}
+            </span>
+          </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+    <div class="mt-4 flex items-center gap-3">
+      <div class="progress-bar-track flex-1">
+        <div class="progress-bar bg-green-500" data-progress="100"></div>
+      </div>
+      <span class="text-green-400 text-sm font-semibold">4/4 completados</span>
+    </div>
+  </div>
+</div>
+
+<!-- ── Tools ─────────────────────────────────────────────────────────────── -->
+<div class="card">
+  <h2 class="text-lg font-bold text-white mb-5">Herramientas y Tecnologías</h2>
+  <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+
+    <div>
+      <h3 class="text-sm font-semibold text-[#8888aa] uppercase tracking-wider mb-3">Frontend</h3>
+      <div class="flex flex-wrap gap-2">
+        {% for t in ['HTML5','CSS3','JavaScript','Tailwind CSS','Jinja2'] %}
+          <span class="tool-badge tool-frontend">{{ t }}</span>
+        {% endfor %}
+      </div>
+    </div>
+
+    <div>
+      <h3 class="text-sm font-semibold text-[#8888aa] uppercase tracking-wider mb-3">Backend</h3>
+      <div class="flex flex-wrap gap-2">
+        {% for t in ['Python 3.11','FastAPI','Pydantic','Uvicorn','PostgreSQL'] %}
+          <span class="tool-badge tool-backend">{{ t }}</span>
+        {% endfor %}
+      </div>
+    </div>
+
+    <div>
+      <h3 class="text-sm font-semibold text-[#8888aa] uppercase tracking-wider mb-3">DevOps & Testing</h3>
+      <div class="flex flex-wrap gap-2">
+        {% for t in ['Git','GitHub','Railway','Pytest','Postman'] %}
+          <span class="tool-badge tool-devops">{{ t }}</span>
+        {% endfor %}
+      </div>
+    </div>
+
+    <div>
+      <h3 class="text-sm font-semibold text-[#8888aa] uppercase tracking-wider mb-3">Diseño & Metodología</h3>
+      <div class="flex flex-wrap gap-2">
+        {% for t in ['Figma','Draw.io','Scrum','Notion','Jira'] %}
+          <span class="tool-badge tool-method">{{ t }}</span>
+        {% endfor %}
+      </div>
+    </div>
+  </div>
+</div>
+
+{% endblock %}

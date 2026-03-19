@@ -1,0 +1,205 @@
+/* ── CSS Custom Properties ──────────────────────────────────────────────── */
+:root {
+  --bg-primary:    #0d0d1a;
+  --bg-card:       #13132a;
+  --bg-card-hover: #1a1a35;
+  --border:        #2a2a4a;
+  --accent:        #6c63ff;
+  --accent-2:      #00d4ff;
+  --text-primary:  #e8e8f0;
+  --text-muted:    #8888aa;
+}
+
+html { scroll-behavior: smooth; }
+body { font-family: 'Inter', sans-serif; }
+
+/* ── Scrollbar ──────────────────────────────────────────────────────────── */
+::-webkit-scrollbar { width: 5px; height: 5px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: #2a2a4a; border-radius: 9999px; }
+::-webkit-scrollbar-thumb:hover { background: #6c63ff; }
+
+/* ── Card ────────────────────────────────────────────────────────────────── */
+.card {
+  background: #13132a;
+  border: 1px solid #2a2a4a;
+  border-radius: 0.625rem;
+  padding: 1rem;
+}
+
+/* ── Kanban column ───────────────────────────────────────────────────────── */
+.kanban-col {
+  display: flex;
+  flex-direction: column;
+}
+
+/* ── Task card (kanban) ──────────────────────────────────────────────────── */
+.task-card {
+  background: #13132a;
+  border: 1px solid #2a2a4a;
+  border-radius: 0.5rem;
+  padding: 0.625rem 0.75rem;
+  cursor: default;
+  transition: border-color 0.15s, transform 0.15s;
+}
+.task-card:hover {
+  border-color: #6c63ff50;
+  transform: translateY(-1px);
+}
+
+/* ── Task type badge ─────────────────────────────────────────────────────── */
+.task-type-badge {
+  display: inline-block;
+  padding: 1px 6px;
+  border-radius: 4px;
+  font-size: 0.68rem;
+  font-weight: 600;
+  border: 1px solid;
+  line-height: 1.6;
+}
+
+/* ── Task ID ─────────────────────────────────────────────────────────────── */
+.task-id {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.7rem;
+  color: #555570;
+}
+
+/* ── Priority dot ────────────────────────────────────────────────────────── */
+.priority-dot {
+  display: inline-block;
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+}
+
+/* ── Empty kanban column ─────────────────────────────────────────────────── */
+.empty-col {
+  border: 1px dashed #2a2a4a;
+  border-radius: 0.5rem;
+  padding: 1rem;
+  text-align: center;
+  font-size: 0.75rem;
+  color: #555570;
+}
+
+/* ── Sprint tab ──────────────────────────────────────────────────────────── */
+.sprint-tab {
+  background: transparent;
+  color: #8888aa;
+  border: 1px solid #2a2a4a;
+  cursor: pointer;
+}
+.sprint-tab:hover { color: #e8e8f0; background: rgba(255,255,255,0.04); }
+.sprint-tab.active {
+  background: rgba(108,99,255,0.15);
+  color: #e8e8f0;
+  border-color: rgba(108,99,255,0.35);
+}
+
+/* ── Data table ──────────────────────────────────────────────────────────── */
+.data-table { width: 100%; border-collapse: collapse; font-size: 0.875rem; }
+.data-table th {
+  text-align: left;
+  padding: 0.5rem 1rem;
+  font-size: 0.7rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: #8888aa;
+  border-bottom: 1px solid #2a2a4a;
+}
+.data-table td {
+  padding: 0.625rem 1rem;
+  border-bottom: 1px solid rgba(42,42,74,0.4);
+  vertical-align: middle;
+}
+.data-table tr:last-child td { border-bottom: none; }
+.data-table tr:hover td { background: rgba(255,255,255,0.015); }
+
+/* ── Code block ─────────────────────────────────────────────────────────── */
+.code-block {
+  background: #080812;
+  border: 1px solid #2a2a4a;
+  border-radius: 0.625rem;
+  font-family: 'JetBrains Mono', 'Fira Code', monospace;
+  font-size: 0.78rem;
+  line-height: 1.8;
+  overflow-x: auto;
+}
+.code-kw  { color: #c792ea; }
+.code-fn  { color: #82aaff; }
+.code-str { color: #c3e88d; }
+.code-cm  { color: #546e7a; font-style: italic; }
+.code-dec { color: #ffcb6b; }
+.code-tp  { color: #00d4ff; }
+
+/* ── Progress bar ────────────────────────────────────────────────────────── */
+.progress-bar-track {
+  background: #2a2a4a;
+  border-radius: 9999px;
+  overflow: hidden;
+  height: 6px;
+}
+.progress-bar {
+  height: 100%;
+  border-radius: 9999px;
+  width: 0%;
+  transition: width 1.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* ── Coverage bar ────────────────────────────────────────────────────────── */
+.cov-bar-track { background: #2a2a4a; border-radius: 4px; height: 8px; flex: 1; overflow: hidden; }
+.cov-bar { height: 100%; border-radius: 4px; width: 0; transition: width 1.4s cubic-bezier(0.4,0,0.2,1); }
+
+/* ── Skeleton ────────────────────────────────────────────────────────────── */
+.skeleton {
+  background: linear-gradient(90deg, #13132a 25%, #1a1a35 50%, #13132a 75%);
+  background-size: 200% 100%;
+  animation: shimmer 1.5s infinite;
+  border-radius: 0.5rem;
+}
+@keyframes shimmer {
+  0%   { background-position: 200% 0; }
+  100% { background-position: -200% 0; }
+}
+
+/* ── Pipeline ────────────────────────────────────────────────────────────── */
+.pipeline-box {
+  background: #13132a;
+  border: 1px solid #2a2a4a;
+  border-radius: 0.5rem;
+  padding: 0.5rem 0.75rem;
+  font-size: 0.75rem;
+  text-align: center;
+  min-width: 100px;
+}
+.pipeline-box.active { border-color: #22c55e; box-shadow: 0 0 10px rgba(34,197,94,0.2); }
+.pipeline-deploy { animation: pulse-deploy 2s infinite; }
+@keyframes pulse-deploy {
+  0%,100% { box-shadow: 0 0 8px rgba(34,197,94,0.25); border-color: #22c55e; }
+  50%     { box-shadow: 0 0 20px rgba(34,197,94,0.5); border-color: #4ade80; }
+}
+
+/* ── Entity card ─────────────────────────────────────────────────────────── */
+.entity-card { background: #13132a; border: 1px solid #2a2a4a; border-radius: 0.625rem; overflow: hidden; flex: 1; min-width: 180px; }
+.entity-header { background: rgba(108,99,255,0.1); padding: 0.6rem 1rem; font-weight: 700; font-size: 0.85rem; border-bottom: 1px solid #2a2a4a; }
+.entity-field { padding: 0.3rem 1rem; font-family: monospace; font-size: 0.75rem; color: #8888aa; border-bottom: 1px solid rgba(42,42,74,0.4); }
+.entity-field:last-child { border-bottom: none; }
+
+/* ── Status dot ──────────────────────────────────────────────────────────── */
+.status-dot { width:10px; height:10px; border-radius:50%; background:#22c55e; box-shadow:0 0 0 3px rgba(34,197,94,0.2); animation:pulse-deploy 2s infinite; display:inline-block; }
+
+/* ── Tool badge ──────────────────────────────────────────────────────────── */
+.tool-badge { display:inline-block; padding:0.25rem 0.6rem; border-radius:9999px; font-size:0.72rem; font-weight:500; border:1px solid; }
+.tool-backend  { background:rgba(34,197,94,0.08);  color:#4ade80; border-color:rgba(34,197,94,0.2); }
+.tool-frontend { background:rgba(59,130,246,0.08); color:#60a5fa; border-color:rgba(59,130,246,0.2); }
+.tool-devops   { background:rgba(249,115,22,0.08); color:#fb923c; border-color:rgba(249,115,22,0.2); }
+.tool-method   { background:rgba(139,92,246,0.08); color:#a78bfa; border-color:rgba(139,92,246,0.2); }
+
+/* ── Arch boxes ──────────────────────────────────────────────────────────── */
+.arch-box { background:#13132a; border:1px solid #2a2a4a; border-radius:0.5rem; padding:0.625rem 1rem; text-align:center; min-width:120px; font-size:0.82rem; font-weight:600; }
+
+/* ── Git branch ──────────────────────────────────────────────────────────── */
+.git-branch { font-family:'JetBrains Mono',monospace; font-size:0.8rem; line-height:2; overflow-x:auto; }
+.git-line { display:flex; align-items:baseline; gap:0.4rem; white-space:nowrap; }
