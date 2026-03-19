@@ -1,6 +1,6 @@
-# SistemaGestor Pro
+# Mock project board
 
-Proyecto final para el taller de Teoría de Sistemas. Básicamente es un sistema de gestión académica donde se puede ver todo el ciclo de vida del software: desde los requisitos hasta el despliegue. Está hecho con Python en el backend y HTML/CSS/JS en el frontend.
+Básicamente es un sistema de gestión académica donde se puede ver todo el ciclo de vida del software: desde los requisitos hasta el despliegue. Está hecho con Python en el backend y HTML/CSS/JS en el frontend de manera individual.
 
 ---
 
@@ -55,7 +55,7 @@ Estos son los que definen *cómo* debe funcionar, no *qué* hace:
 
 ---
 
-## Equipo
+## Equipo Mock (equipo falso)
 
 | Nombre           | Rol            | Herramientas     |
 |------------------|----------------|------------------|
